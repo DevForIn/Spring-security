@@ -17,22 +17,26 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public boolean joinUser(UserJoinInfoDto userJoinInfoDto) {
-        if(!userRepository.findById(userJoinInfoDto.getId()).isEmpty()){
-            log.error("this ID is used...");
-            return false;
-        }
+    public void joinUser(UserJoinInfoDto userJoinInfoDto) {
+
+        validateDuplicateUserId(userJoinInfoDto.getId());
 
         String encodedPassword = passwordEncoder.encode(userJoinInfoDto.getPassword());
 
-        Users user = new Users();
+        Users user = Users.builder()
+                .id(userJoinInfoDto.getId())
+                .username(userJoinInfoDto.getUsername())
+                .password(encodedPassword)
+                .build();
 
-        user.setId(userJoinInfoDto.getId());
-        user.setUsername(userJoinInfoDto.getUsername());
-        user.setPassword(encodedPassword);
+        userRepository.save(user);
+    }
 
-        user =  userRepository.save(user);
-
-        return user != null;
+    // 중복 ID 검증 로직 분리
+    private void validateDuplicateUserId(String id) {
+        if (userRepository.findById(id).isPresent()) {
+            log.error("This ID is already in use: {}", id);
+            throw new IllegalStateException("ID is already in use.");
+        }
     }
 }

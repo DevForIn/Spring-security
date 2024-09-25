@@ -1,14 +1,15 @@
 package kr.jeongin.springbasic.domain.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jdk.jshell.Snippet;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-@Entity
+@NoArgsConstructor
 @Data
+@Entity
 @Table(name = "users")
 public class Users {
 
@@ -22,4 +23,10 @@ public class Users {
     @Column
     private String username;
 
+    @Builder
+    public Users(String id, String password, String username) {
+        this.id = id;
+        this.password = password;
+        this.username = username;
+    }
 }
