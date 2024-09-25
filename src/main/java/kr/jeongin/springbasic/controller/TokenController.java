@@ -2,7 +2,7 @@ package kr.jeongin.springbasic.controller;
 
 import kr.jeongin.springbasic.controller.dto.TokenDto;
 import kr.jeongin.springbasic.controller.dto.UserInfoDto;
-import kr.jeongin.springbasic.service.CustomUserDetailsService;
+import kr.jeongin.springbasic.service.authorization.CustomUserDetailsService;
 import kr.jeongin.springbasic.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

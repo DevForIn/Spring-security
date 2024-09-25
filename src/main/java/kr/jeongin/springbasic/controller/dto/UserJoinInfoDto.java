@@ -7,4 +7,5 @@ public class UserJoinInfoDto {
     private String id;
     private String password;
     private String username;
+
 }

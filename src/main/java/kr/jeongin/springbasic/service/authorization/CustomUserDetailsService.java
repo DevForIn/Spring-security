@@ -1,4 +1,4 @@
-package kr.jeongin.springbasic.service;
+package kr.jeongin.springbasic.service.authorization;
 
 import kr.jeongin.springbasic.domain.entity.Users;
 import kr.jeongin.springbasic.domain.repository.UserRepository;
