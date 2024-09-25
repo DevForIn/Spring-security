@@ -17,7 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    
     // JWT 필터 의존성 주입
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -42,12 +41,12 @@ public class SecurityConfig {
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())   // CSRF(Cross-Site Request Forgery) 보호 비활성화
-                        .authorizeHttpRequests(auth ->
-                                auth
-                                        .requestMatchers("/login","/auth/login").permitAll()     // "/login", "/auth/login" 경로는 인증 없이 접근 허용
-                                        .anyRequest().authenticated()       // 그 외 모든 요청은 인증 필요
-                        )
-                                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // 세션 관리 비활성화(JWT 사용을 위한 무상태 설정)
+                .authorizeHttpRequests(auth ->
+                        auth
+                                .requestMatchers("/login","/auth/login").permitAll()     // "/login", "/auth/login" 경로는 인증 없이 접근 허용
+                                .anyRequest().authenticated()       // 그 외 모든 요청은 인증 필요
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // 세션 관리 비활성화(JWT 사용을 위한 무상태 설정)
 
         // JWT 필터를 UsernamePasswordAuthenticationFilter 앞에 추가
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

@@ -18,13 +18,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;  // DB에서 사용자 정보를 가져올 리포지토리
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 
         // DB에서 사용자 이름으로 사용자 검색
-        Users users = (Users) userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+        Users users = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + id));
 
-        return new org.springframework.security.core.userdetails.User(users.getUsername(), users.getPassword(),
+        return new org.springframework.security.core.userdetails.User(users.getId(), users.getPassword(),
                 new ArrayList<>());  // 사용자 정보를 UserDetails 객체로 반환
     }
 }

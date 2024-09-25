@@ -3,6 +3,7 @@ package kr.jeongin.springbasic.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -15,10 +16,14 @@ import java.util.function.Function;
 public class JwtUtil {
 
     // 토큰 서명에 사용할 비밀키
-    private String SECRET_KEY = "thisissecretkeythisissecretkeythisissecretkeythisissecretkeythisissecretkeythisissecretkeythisissecretkeythisissecretkey";
+    @Value("${token.secret}")
+    private String SECRET_KEY;
+
+    @Value("${token.expire.time}")
+    private int TOKEN_TIME;
 
     // 토큰에서 사용자 이름 추출
-    public String extractUsername(String token){
+    public String extractUserid(String token){
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -59,14 +64,14 @@ public class JwtUtil {
                 .setClaims(claims)      // 클레임 설정
                 .setSubject(subject)    // 사용자 이름 설정
                 .setIssuedAt(new Date(System.currentTimeMillis())) // 토큰 발급 시간 설정
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 토큰 만료 시간 설정
+                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_TIME)) // 토큰 만료 시간 설정
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY) // 비밀키 사용 서명
                 .compact(); // 토큰 생성
     }
 
     // 토큰 유효 확인
     public boolean validateToken(String token, UserDetails userDetails){
-        final String username = extractUsername(token);
+        final String username = extractUserid(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }

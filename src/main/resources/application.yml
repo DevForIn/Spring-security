@@ -14,3 +14,9 @@ spring:
       minimum-idle: 5
       maximum-pool-size: 1000
       pool-name: BaseHikariPool
+
+token:
+  expire:
+    # 5분
+    time: 300000
+  secret : thisissecretkeythisissecretkeythisissecretkeythisissecretkeythisissecretkeythisissecretkeythisissecretkeythisissecretkey
